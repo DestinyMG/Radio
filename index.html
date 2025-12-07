@@ -272,8 +272,12 @@
 
         .on-air-indicator {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 20px;
+            /* Puedes ajustar esta distancia del borde superior */
+            left: 50%;
+            /* Centra horizontalmente */
+            transform: translateX(-50%);
+            /* Ajusta el centrado */
             display: flex;
             align-items: center;
             gap: 10px;
@@ -323,7 +327,7 @@
             text-align: center;
             z-index: 5;
             padding: 15px;
-            margin-top: 100px;
+            margin-top: 160px;
             width: 100%;
         }
 
@@ -449,6 +453,7 @@
             transition: all 0.3s ease;
             position: relative;
             left: -125px;
+            top: -30px;
             /* Movido más a la izquierda */
         }
 
@@ -952,6 +957,19 @@
                 font-size: 1.3rem;
                 /* Icono más pequeño en móvil */
             }
+
+            .playback-controls {
+                margin-top: 5px;
+                /* MÁS ARRIBA EN MÓVIL: de 25px a 5px */
+            }
+
+            .main-play-button {
+                width: 50px;
+                height: 50px;
+                left: -150px;
+                top: 35px;
+                /* NUEVO: Ajuste para móvil */
+            }
         }
     </style>
 </head>
@@ -979,6 +997,7 @@
                 <img src="logoradio.jpeg" alt="Logo Radio Dinamica" class="header-logo-img" id="header-logo">
             </div>
             <h1 class="header-title">DINAMICA 105.5 FM</h1>
+            <h5 class="header-title">LA NUEVA RADIO DE RUBIO</h5>
             <p class="header-subtitle">programación• Las 24 horas</p>
         </div>
     </header>
@@ -1105,18 +1124,25 @@
         <!-- Carrusel más pequeño -->
         <div class="carousel-section">
             <div class="carousel">
-                <div class="carousel-slide active"
-                    style="background-image: url('https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+                <div class="carousel-slide active" style="background-image: url('EXISTOS.jpeg')">
                     <div class="carousel-content">
                         <h2 class="carousel-title">Los Éxitos del Momento</h2>
                         <p class="carousel-subtitle">Escucha las canciones más populares en nuestra programación</p>
                     </div>
+
                 </div>
                 <div class="carousel-slide"
                     style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
                     <div class="carousel-content">
                         <h2 class="carousel-title">Programas Especiales</h2>
                         <p class="carousel-subtitle">Entrevistas y contenido exclusivo todos los días</p>
+                    </div>
+                </div>
+
+                <div class="carousel-slide" style="background-image: url('CLASICOS.jpeg')">
+                    <div class="carousel-content">
+                        <h2 class="carousel-title">Clasicos que nunca pasan<h2>
+                                <p class="carousel-subtitle">Entrevistas y contenido exclusivo todos los días</p>
                     </div>
                 </div>
                 <div class="carousel-slide"
@@ -1439,8 +1465,8 @@
                     .then(() => {
                         isPlaying = true;
                         updatePlayerUI(true);
-                        updatePlayerStatus("¡Transmisión en vivo desde el proxy!", "#00ffaa");
-                        updateConnectionStatus("✓ Transmitiendo desde proxy", "#00ffaa");
+                        updatePlayerStatus("¡Transmisión en vivo !", "#00ffaa");
+                        updateConnectionStatus("✓ Transmitiendo", "#00ffaa");
 
                         console.log('Reproducción iniciada inmediatamente desde proxy precargado');
                     })
