@@ -324,6 +324,7 @@
             z-index: 5;
             padding: 15px;
             margin-top: 100px;
+            width: 100%;
         }
 
         .player-title {
@@ -341,11 +342,14 @@
             color: #a0a0ff;
             margin-bottom: 30px;
             max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .frequency-display {
             margin-top: 25px;
             text-align: center;
+            width: 100%;
         }
 
         .frequency {
@@ -371,6 +375,8 @@
             color: #a0a0ff;
             text-align: center;
             max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .visualizer {
@@ -416,6 +422,57 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        /* CONTROLES DE REPRODUCCIÓN - UN SOLO BOTÓN PEQUEÑO A LA IZQUIERDA */
+        .playback-controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .main-play-button {
+            background: linear-gradient(45deg, #0088ff, #0055ff);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            /* Más pequeño */
+            height: 45px;
+            /* Más pequeño */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 136, 255, 0.6);
+            transition: all 0.3s ease;
+            position: relative;
+            left: -125px;
+            /* Movido más a la izquierda */
+        }
+
+        .main-play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 136, 255, 0.8);
+        }
+
+        .main-play-button:active {
+            transform: scale(0.95);
+        }
+
+        .main-play-button i {
+            font-size: 1.5rem;
+            /* Icono más pequeño */
+            color: white;
+            margin-left: 3px;
+            /* Pequeño ajuste para centrar */
+        }
+
+        /* Estado de stop */
+        .main-play-button.stop {
+            background: linear-gradient(45deg, #ff5555, #ff0000);
+            box-shadow: 0 5px 15px rgba(255, 85, 85, 0.6);
         }
 
         @keyframes pulse {
@@ -881,6 +938,20 @@
             .player-content {
                 margin-top: 70px;
             }
+
+            .main-play-button {
+                width: 55px;
+                /* Más pequeño en móvil */
+                height: 55px;
+                /* Más pequeño en móvil */
+                left: -40px;
+                /* Ajuste para móvil */
+            }
+
+            .main-play-button i {
+                font-size: 1.3rem;
+                /* Icono más pequeño en móvil */
+            }
         }
     </style>
 </head>
@@ -934,66 +1005,21 @@
                             <div class="frequency-label">Frecuencia</div>
                         </div>
 
-                        <!-- CONTROLES DE REPRODUCCIÓN MEJORADOS -->
-                        <div class="playback-controls"
-                            style="margin-top: 25px; display: flex; justify-content: center; gap: 15px;">
-                            <button id="playButton" style="
-                                background: linear-gradient(45deg, #00ffaa, #0088ff);
-                                border: none;
-                                border-radius: 50%;
-                                width: 60px;
-                                height: 60px;
-                                cursor: pointer;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                box-shadow: 0 5px 15px rgba(0, 255, 170, 0.4);
-                                transition: all 0.3s ease;
-                            ">
-                                <i class="fas fa-play" style="font-size: 1.5rem; color: white;"></i>
-                            </button>
-
-                            <button id="stopButton" style="
-                                background: linear-gradient(45deg, #ff5555, #ff0000);
-                                border: none;
-                                border-radius: 50%;
-                                width: 60px;
-                                height: 60px;
-                                cursor: pointer;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-                                transition: all 0.3s ease;
-                            ">
-                                <i class="fas fa-stop" style="font-size: 1.5rem; color: white;"></i>
-                            </button>
-
-                            <button id="muteButton" style="
-                                background: linear-gradient(45deg, #ffaa00, #ff5500);
-                                border: none;
-                                border-radius: 50%;
-                                width: 60px;
-                                height: 60px;
-                                cursor: pointer;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                box-shadow: 0 5px 15px rgba(255, 170, 0, 0.4);
-                                transition: all 0.3s ease;
-                            ">
-                                <i class="fas fa-volume-up" style="font-size: 1.5rem; color: white;"></i>
+                        <!-- UN SOLO BOTÓN DE CONTROL PEQUEÑO Y A LA IZQUIERDA -->
+                        <div class="playback-controls">
+                            <button id="mainPlayButton" class="main-play-button">
+                                <i class="fas fa-play"></i>
                             </button>
                         </div>
 
                         <div class="status-message" id="status-message">
-                            Listo para conectar con el proxy...
+                            Precargando transmisión...
                         </div>
 
                         <!-- Indicador de conexión -->
                         <div id="connection-status" style="margin-top: 15px; font-size: 0.9rem; color: #a0a0ff;">
                             <i class="fas fa-wifi" style="margin-right: 8px;"></i>
-                            <span id="connection-text">Conectando al proxy...</span>
+                            <span id="connection-text">Preparando conexión...</span>
                         </div>
                     </div>
 
@@ -1003,7 +1029,7 @@
                     </div>
 
                     <!-- Audio conectado al proxy -->
-                    <audio id="radioPlayer" style="display: none;">
+                    <audio id="radioPlayer" preload="auto" style="display: none;">
                         <source src="https://proxy-1-14c1.onrender.com/stream" type="audio/mpeg">
                         Tu navegador no soporta audio en streaming.
                     </audio>
@@ -1303,157 +1329,213 @@
         // URL de tu proxy
         const PROXY_URL = "https://proxy-1-14c1.onrender.com/stream";
 
-        // Referencias a elementos
-        const radioPlayer = document.getElementById('radioPlayer');
-        const playButton = document.getElementById('playButton');
-        const stopButton = document.getElementById('stopButton');
-        const muteButton = document.getElementById('muteButton');
-        const statusMessage = document.getElementById('status-message');
-        const connectionText = document.getElementById('connection-text');
-        const onAirDot = document.getElementById('on-air-dot');
-        const onAirText = document.getElementById('on-air-text');
-        const connectionStatus = document.getElementById('connection-status');
-
-        // Estado inicial
+        // Variables globales
+        let radioPlayer = null;
+        let mainPlayButton = null;
         let isPlaying = false;
-        let isMuted = false;
-        let connectionAttempts = 0;
-        const maxConnectionAttempts = 5;
+        let proxyPreloaded = false;
+        let connectionTested = false;
+
+        // PRECARGAR EL PROXY DURANTE LA PANTALLA DE CARGA
+        async function preloadProxyDuringLoading() {
+            try {
+                console.log("Iniciando precarga del proxy durante pantalla de carga...");
+
+                // Crear el elemento audio pero no mostrarlo aún
+                const tempAudio = new Audio();
+                tempAudio.preload = "auto";
+                tempAudio.src = PROXY_URL;
+
+                // Forzar la precarga
+                tempAudio.load();
+
+                // Intentar una pequeña conexión para activar el cache
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+                try {
+                    await fetch(PROXY_URL, {
+                        method: 'HEAD',
+                        mode: 'cors',
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    console.log("Proxy precargado exitosamente");
+                    proxyPreloaded = true;
+                } catch (fetchError) {
+                    clearTimeout(timeoutId);
+                    console.log("Precarga básica completada, detalle:", fetchError.message);
+                    proxyPreloaded = true; // Aún marcamos como preloaded
+                }
+
+            } catch (error) {
+                console.log("Error en precarga, se intentará al hacer clic:", error);
+            }
+        }
 
         // Función para probar conexión al proxy
         async function testProxyConnection() {
-            try {
-                connectionText.textContent = "Probando conexión con el proxy...";
+            if (connectionTested) return true;
 
-                // Intentar hacer una solicitud HEAD al proxy
+            try {
+                updateConnectionStatus("Probando conexión con el proxy...", "#ffaa00");
+
                 const response = await fetch(PROXY_URL, {
                     method: 'HEAD',
                     mode: 'cors',
-                    cache: 'no-cache'
+                    cache: 'no-cache',
+                    headers: {
+                        'Range': 'bytes=0-1' // Pequeña solicitud para probar
+                    }
                 });
 
-                if (response.ok || response.status === 200) {
-                    connectionText.textContent = "✓ Proxy conectado correctamente";
-                    connectionStatus.style.color = "#00ffaa";
+                if (response.ok || response.status === 200 || response.status === 206) {
+                    updateConnectionStatus("✓ Proxy conectado correctamente", "#00ffaa");
+                    connectionTested = true;
                     return true;
                 } else {
-                    connectionText.textContent = "⚠ Proxy responde pero con error";
-                    connectionStatus.style.color = "#ffaa00";
+                    updateConnectionStatus("⚠ Proxy responde pero con error", "#ffaa00");
                     return false;
                 }
             } catch (error) {
-                connectionAttempts++;
-                if (connectionAttempts < maxConnectionAttempts) {
-                    connectionText.textContent = `Intentando conexión (${connectionAttempts}/${maxConnectionAttempts})...`;
-                    setTimeout(testProxyConnection, 2000);
-                    return false;
-                } else {
-                    connectionText.textContent = "✗ No se pudo conectar al proxy";
-                    connectionStatus.style.color = "#ff5555";
-                    statusMessage.textContent = "Error de conexión. Verifica que el proxy esté funcionando.";
-                    return false;
+                console.log("Error de conexión al proxy:", error);
+                updateConnectionStatus("✗ Error de conexión inicial", "#ff5555");
+                return false;
+            }
+        }
+
+        // Actualizar estado de conexión
+        function updateConnectionStatus(text, color) {
+            const connectionText = document.getElementById('connection-text');
+            const connectionStatus = document.getElementById('connection-status');
+
+            if (connectionText) connectionText.textContent = text;
+            if (connectionStatus) connectionStatus.style.color = color;
+        }
+
+        // Actualizar estado del reproductor
+        function updatePlayerStatus(text, color) {
+            const statusMessage = document.getElementById('status-message');
+            if (statusMessage) {
+                statusMessage.textContent = text;
+                statusMessage.style.color = color;
+            }
+        }
+
+        // Función para iniciar/detener reproducción
+        function togglePlayback() {
+            if (!radioPlayer) {
+                console.error("Reproductor no inicializado");
+                return;
+            }
+
+            if (!isPlaying) {
+                // Iniciar reproducción
+                if (!radioPlayer.src) {
+                    radioPlayer.src = PROXY_URL;
+                }
+
+                radioPlayer.play()
+                    .then(() => {
+                        isPlaying = true;
+                        updatePlayerUI(true);
+                        updatePlayerStatus("¡Transmisión en vivo desde el proxy!", "#00ffaa");
+                        updateConnectionStatus("✓ Transmitiendo desde proxy", "#00ffaa");
+
+                        console.log('Reproducción iniciada inmediatamente desde proxy precargado');
+                    })
+                    .catch(error => {
+                        console.error('Error al reproducir:', error);
+                        updatePlayerStatus("Error al iniciar. Haz clic nuevamente.", "#ff5555");
+                        isPlaying = false;
+                        updatePlayerUI(false);
+                    });
+            } else {
+                // Detener reproducción
+                radioPlayer.pause();
+                radioPlayer.currentTime = 0;
+                isPlaying = false;
+                updatePlayerUI(false);
+                updatePlayerStatus("Reproducción detenida", "#a0a0ff");
+                updateConnectionStatus("Listo para reproducir", "#a0a0ff");
+            }
+        }
+
+        // Actualizar interfaz del reproductor
+        function updatePlayerUI(playing) {
+            const mainPlayButton = document.getElementById('mainPlayButton');
+            const onAirDot = document.getElementById('on-air-dot');
+            const onAirText = document.getElementById('on-air-text');
+
+            if (playing) {
+                // Estado reproduciendo
+                if (mainPlayButton) {
+                    mainPlayButton.innerHTML = '<i class="fas fa-stop"></i>';
+                    mainPlayButton.classList.add('stop');
+                }
+                if (onAirDot) onAirDot.className = 'on-air-dot live';
+                if (onAirText) {
+                    onAirText.className = 'on-air-text live';
+                    onAirText.textContent = 'EN VIVO';
+                }
+            } else {
+                // Estado detenido
+                if (mainPlayButton) {
+                    mainPlayButton.innerHTML = '<i class="fas fa-play"></i>';
+                    mainPlayButton.classList.remove('stop');
+                }
+                if (onAirDot) onAirDot.className = 'on-air-dot loading';
+                if (onAirText) {
+                    onAirText.className = 'on-air-text loading';
+                    onAirText.textContent = 'OFF AIR';
                 }
             }
         }
 
-        // Iniciar reproducción
-        function startPlayback() {
+        // Inicializar reproductor
+        function initializePlayer() {
+            radioPlayer = document.getElementById('radioPlayer');
+            mainPlayButton = document.getElementById('mainPlayButton');
+
+            if (!radioPlayer || !mainPlayButton) {
+                console.error("Elementos del reproductor no encontrados");
+                return;
+            }
+
+            // Configurar eventos del reproductor
+            radioPlayer.addEventListener('playing', () => {
+                console.log('Audio en reproducción');
+            });
+
+            radioPlayer.addEventListener('error', (e) => {
+                console.error('Error en el reproductor:', e);
+                updatePlayerStatus("Error de conexión con el proxy", "#ff5555");
+                updateConnectionStatus("✗ Error de conexión", "#ff5555");
+                isPlaying = false;
+                updatePlayerUI(false);
+            });
+
+            radioPlayer.addEventListener('waiting', () => {
+                updatePlayerStatus("Buffering...", "#ffaa00");
+            });
+
+            radioPlayer.addEventListener('canplay', () => {
+                console.log('Audio listo para reproducir');
+                updatePlayerStatus("Listo para reproducir", "#00ffaa");
+            });
+
+            // Event listener para el botón principal
+            mainPlayButton.addEventListener('click', togglePlayback);
+
+            // Intentar probar conexión inmediatamente
+            testProxyConnection();
+
+            // Pre-cargar el audio para respuesta inmediata
             if (!radioPlayer.src) {
                 radioPlayer.src = PROXY_URL;
-            }
-
-            radioPlayer.play()
-                .then(() => {
-                    isPlaying = true;
-                    playButton.innerHTML = '<i class="fas fa-pause" style="font-size: 1.5rem; color: white;"></i>';
-                    statusMessage.textContent = "¡Transmisión en vivo desde el proxy!";
-                    statusMessage.style.color = "#00ffaa";
-
-                    // Cambiar indicador ON AIR a verde
-                    onAirDot.className = 'on-air-dot live';
-                    onAirText.className = 'on-air-text live';
-                    onAirText.textContent = 'EN VIVO';
-
-                    // Actualizar indicador de conexión
-                    connectionText.textContent = "✓ Transmitiendo desde proxy";
-                    connectionStatus.style.color = "#00ffaa";
-
-                    console.log('Reproducción iniciada desde proxy');
-                })
-                .catch(error => {
-                    console.error('Error al reproducir:', error);
-                    statusMessage.textContent = "Error al iniciar reproducción. Haz clic nuevamente.";
-                    statusMessage.style.color = "#ff5555";
-                });
-        }
-
-        // Detener reproducción
-        function stopPlayback() {
-            radioPlayer.pause();
-            radioPlayer.currentTime = 0;
-            isPlaying = false;
-            playButton.innerHTML = '<i class="fas fa-play" style="font-size: 1.5rem; color: white;"></i>';
-            statusMessage.textContent = "Reproducción detenida";
-            statusMessage.style.color = "#a0a0ff";
-
-            // Cambiar indicador ON AIR a rojo
-            onAirDot.className = 'on-air-dot loading';
-            onAirText.className = 'on-air-text loading';
-            onAirText.textContent = 'OFF AIR';
-
-            connectionText.textContent = "Reproducción detenida";
-            connectionStatus.style.color = "#a0a0ff";
-        }
-
-        // Alternar silencio
-        function toggleMute() {
-            isMuted = !isMuted;
-            radioPlayer.muted = isMuted;
-
-            if (isMuted) {
-                muteButton.innerHTML = '<i class="fas fa-volume-mute" style="font-size: 1.5rem; color: white;"></i>';
-                muteButton.style.background = 'linear-gradient(45deg, #888888, #555555)';
-                statusMessage.textContent = "Sonido silenciado";
-            } else {
-                muteButton.innerHTML = '<i class="fas fa-volume-up" style="font-size: 1.5rem; color: white;"></i>';
-                muteButton.style.background = 'linear-gradient(45deg, #ffaa00, #ff5500)';
-                statusMessage.textContent = "¡Transmisión en vivo desde el proxy!";
+                radioPlayer.load();
             }
         }
-
-        // Event listeners para botones
-        playButton.addEventListener('click', () => {
-            if (isPlaying) {
-                stopPlayback();
-            } else {
-                startPlayback();
-            }
-        });
-
-        stopButton.addEventListener('click', stopPlayback);
-        muteButton.addEventListener('click', toggleMute);
-
-        // Eventos del reproductor
-        radioPlayer.addEventListener('playing', () => {
-            console.log('Audio en reproducción');
-        });
-
-        radioPlayer.addEventListener('error', (e) => {
-            console.error('Error en el reproductor:', e);
-            statusMessage.textContent = "Error de conexión con el proxy";
-            statusMessage.style.color = "#ff5555";
-            connectionText.textContent = "✗ Error de conexión";
-            connectionStatus.style.color = "#ff5555";
-        });
-
-        radioPlayer.addEventListener('waiting', () => {
-            statusMessage.textContent = "Buffering...";
-            statusMessage.style.color = "#ffaa00";
-        });
-
-        radioPlayer.addEventListener('canplay', () => {
-            console.log('Audio listo para reproducir');
-        });
 
         // Crear partículas para la pantalla de carga
         function createParticles() {
@@ -1503,12 +1585,11 @@
             const slides = document.querySelectorAll('.carousel-slide');
             const indicatorsContainer = document.querySelector('.carousel-indicators');
 
-            indicatorsContainer.innerHTML = ""; // borrar indicadores fijos
+            indicatorsContainer.innerHTML = "";
 
             let currentSlide = 0;
             let indicators = [];
 
-            // Crear indicadores automáticamente según la cantidad de slides
             slides.forEach((slide, index) => {
                 const indicator = document.createElement("div");
                 indicator.classList.add("indicator");
@@ -1522,7 +1603,6 @@
                 indicators.push(indicator);
             });
 
-            // Activar el primero
             indicators[0].classList.add("active");
 
             function showSlide(index) {
@@ -1535,7 +1615,6 @@
                 currentSlide = index;
             }
 
-            // Cambio automático
             setInterval(() => {
                 let next = (currentSlide + 1) % slides.length;
                 showSlide(next);
@@ -1546,19 +1625,16 @@
         function initVUMeters() {
             const vuTypes = ['sonido', 'bajos', 'medios', 'agudos'];
 
-            // Crear escalas para cada vumetro
             vuTypes.forEach(type => {
                 const vuTicks = document.getElementById(`vu-ticks-${type}`);
                 const vuNumbers = document.getElementById(`vu-numbers-${type}`);
 
                 for (let i = 0; i <= 10; i++) {
-                    // Marcas principales
                     const majorTick = document.createElement('div');
                     majorTick.className = 'vu-tick major';
                     majorTick.style.transform = `rotate(${i * 18 - 90}deg)`;
                     vuTicks.appendChild(majorTick);
 
-                    // Números (solo pares)
                     if (i % 2 === 0) {
                         const number = document.createElement('div');
                         number.className = 'vu-number';
@@ -1576,7 +1652,6 @@
                         vuNumbers.appendChild(number);
                     }
 
-                    // Marcas menores
                     if (i < 10) {
                         for (let j = 1; j < 5; j++) {
                             const minorTick = document.createElement('div');
@@ -1587,10 +1662,6 @@
                     }
                 }
             });
-
-            // SIMULACIÓN DE MOVIMIENTO - GARANTIZADO QUE NO BAJA DE 2
-            let minValue = 1;
-            let maxValue = 4;
 
             let currentValues = {
                 sonido: 2,
@@ -1607,25 +1678,21 @@
             };
 
             function updateVUMeters() {
-                // Cambio aleatorio de valores (SOLO ENTRE 2 Y 8)
                 if (Math.random() < 0.08) {
-                    targetValues.sonido = Math.random() * 5 + 3;   // 3-8
-                    targetValues.bajos = Math.random() * 4 + 2.5;  // 2.5-6.5
-                    targetValues.medios = Math.random() * 5 + 2;   // 2-7
-                    targetValues.agudos = Math.random() * 4 + 3.5; // 3.5-7.5
+                    targetValues.sonido = Math.random() * 5 + 3;
+                    targetValues.bajos = Math.random() * 4 + 2.5;
+                    targetValues.medios = Math.random() * 5 + 2;
+                    targetValues.agudos = Math.random() * 4 + 3.5;
                 }
 
-                // Suavizar movimiento y GARANTIZAR MÍNIMO DE 2
                 vuTypes.forEach(type => {
                     currentValues[type] += (targetValues[type] - currentValues[type]) * 0.1;
 
-                    // ¡GARANTIZADO! NUNCA BAJA DE 2
                     if (currentValues[type] < 2) {
                         currentValues[type] = 2;
-                        targetValues[type] = 2.5; // Forzar subida
+                        targetValues[type] = 2.5;
                     }
 
-                    // Actualizar aguja
                     const angle = (currentValues[type] * 18) - 90;
                     const vuNeedle = document.getElementById(`vu-needle-${type}`);
                     vuNeedle.style.transform = `translateX(-50%) rotate(${angle}deg)`;
@@ -1637,17 +1704,20 @@
             updateVUMeters();
         }
 
-        // Pantalla de carga simulada
+        // Pantalla de carga optimizada con precarga
         document.addEventListener('DOMContentLoaded', function () {
             const loadingScreen = document.getElementById('loading-screen');
             const mainContent = document.getElementById('main-content');
             const loadingProgress = document.getElementById('loading-progress');
 
+            // INICIAR PRECARGA DEL PROXY INMEDIATAMENTE
+            preloadProxyDuringLoading();
+
             createParticles();
             createVisualizer();
 
             const startTime = Date.now();
-            const totalDuration = 6000; // 6 segundos exactos
+            const totalDuration = 5000; // 5 segundos (más rápido)
 
             function updateProgress() {
                 const elapsed = Date.now() - startTime;
@@ -1664,16 +1734,24 @@
                             loadingScreen.style.display = 'none';
                             if (mainContent) mainContent.style.opacity = '1';
 
-                            // Probar conexión al proxy después de cargar
-                            testProxyConnection();
+                            // Inicializar reproductor después de cargar
+                            initializePlayer();
+                            initCarousel();
+                            initVUMeters();
+
+                            // Actualizar estado basado en precarga
+                            if (proxyPreloaded) {
+                                updatePlayerStatus("Listo para reproducir al instante", "#00ffaa");
+                                updateConnectionStatus("✓ Proxy precargado exitosamente", "#00ffaa");
+                            } else {
+                                updatePlayerStatus("Preparando transmisión...", "#ffaa00");
+                            }
                         }, 300);
                     }
                 }
             }
 
             updateProgress();
-            initCarousel();
-            initVUMeters();
         });
 
         // PWA Installation
@@ -1686,21 +1764,18 @@
             const banner = document.getElementById("pwaInstallBanner");
             const installBtn = document.getElementById("btnInstalarPWA");
 
-            // Mostrar banner con animación
             banner.style.display = "block";
             setTimeout(() => {
                 banner.style.top = "20px";
             }, 100);
 
-            // Cerrar automáticamente a los 15 segundos
             setTimeout(() => {
                 banner.style.top = "-200px";
             }, 15000);
 
-            // Clic en instalar
             installBtn.addEventListener("click", async () => {
                 banner.style.top = "-200px";
-                deferredPrompt.prompt(); // prompt oficial
+                deferredPrompt.prompt();
 
                 const choice = await deferredPrompt.userChoice;
                 console.log("Instalación:", choice.outcome);
